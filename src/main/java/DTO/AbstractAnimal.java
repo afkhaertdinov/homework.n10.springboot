@@ -17,8 +17,9 @@ public abstract class AbstractAnimal implements Animal {
     protected String secretInformation; // секретное поле
 
     public AbstractAnimal(InitAnimal initAnimal) {
+        this.breed = this.getClass().getSimpleName();
+        this.name = initAnimal.getName(this.breed);
         this.secretInformation = initAnimal.getSecret();
-        this.name = initAnimal.getName();
         this.cost = initAnimal.getCost();
         this.character = initAnimal.getCharacter();
         this.birthDate = initAnimal.getBirthDate();

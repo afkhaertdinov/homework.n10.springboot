@@ -1,27 +1,30 @@
 package Service;
 
-import DTO.*;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.*;
 
 
+@SuppressWarnings("unused")
 @Configuration
 @ComponentScan("DTO")
-@ConditionalOnBean(InitConfig.class)
+@SpringBootConfiguration
+@EnableAutoConfiguration
 public class SpringConfig {
 
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public InitAnimal initAnimal() {
-//        return new InitAnimal();
-//    }
+    @Bean
+    @ConditionalOnMissingBean
+    public CreateAnimalService createAnimalService() {
+        return new CreateAnimalService();
+    }
 
     @Bean
-    @ConditionalOnBean(InitAnimal.class)
     @Scope("prototype")
-    public Cat cat(InitAnimal initAnimal ) {
-        return new Cat(initAnimal);
+    @ConditionalOnBean(CreateAnimalService.class)
+    public AnimalRepositoryImpl animalRepositoryImpl(CreateAnimalService service, int quantity) {
+        return new AnimalRepositoryImpl(service, quantity);
     }
 
 }

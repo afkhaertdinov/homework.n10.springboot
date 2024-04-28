@@ -2,6 +2,8 @@ package Service;
 
 import DTO.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.NonNull;
 import java.io.File;
 import java.io.IOException;
@@ -11,17 +13,32 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@SuppressWarnings("unused")
 public class AnimalRepositoryImpl implements AnimalRepository {
+    final CreateAnimalService createAnimalService;
+    @Getter
+    List<Animal> animals;
+    int quantity;
+
+    public AnimalRepositoryImpl(CreateAnimalService service, int quantity) {
+        this.createAnimalService = service;
+        this.quantity = quantity;
+    }
+
+    @PostConstruct
+    private void fillingAnimals() throws IOException {
+        this.animals = createAnimalService.getAnimals(quantity);
+    }
+
     /**
      * При помощи Stream API найти всех животных, которые родились в високосный год.
      * <br/><li> Возможны случаи когда во входном массиве окажется больше одного животного с одинаковым именем и типом и рождённым в високосный год. По указанию преподавателя игнорируем дубли.</li>
-     * @param animals На вход подается массив животных {@code List<Animal>}.
      * @return Метод должен возвращать {@code Map<String,LocalDate>}, которая содержит в качестве ключа тип
      * животного + имя, а в значении дату рождения. Пример ключа: Cat Barsik, Dog Spot (русский язык
      * допускается в именах).
      */
     @Override
-    public Map<String, LocalDate> findLeapYearNames(@NonNull List<Animal> animals) {
+    public Map<String, LocalDate> findLeapYearNames() {
         Set<String> items = new HashSet<>(); //По указанию Макса удаляю возможные дубли, для этого использую Set.add()
         return animals.stream().filter(animal -> animal.getBirthDate().isLeapYear()).
                 filter(e -> items.add(e.getBreed() + " " + e.getName())).collect(Collectors.
@@ -50,15 +67,13 @@ public class AnimalRepositoryImpl implements AnimalRepository {
             animalIntegerMap = entry.stream().max(Map.Entry.comparingByValue()).stream().
                     collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
 
-//                    .stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
         // Записываем результат в findOlderAnimals.json, согласно домашнего задания №9
         List<EntryAnimalInteger> mops = // переводим Map в List<Entry> для последующей Сериализации
                 animalIntegerMap.entrySet().stream().
                         map(e -> new EntryAnimalInteger(e.getKey(), e.getValue())).collect(Collectors.toList());
 
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
-        mapper.writeValue(new File("src/main/java/HomeWork/Recources/Results/findOlderAnimals.json"), mops);
+        mapper.writeValue(new File("src/main/resources/Results/findOlderAnimals.json"), mops);
         return animalIntegerMap;
     }
 

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("unused")
 @Component
 @Scope("prototype")
-public class Cat extends AbstractAnimal {
+public class Dog extends AbstractAnimal {
 
     @Autowired
-    public Cat(InitAnimal initAnimal) {
+    public Dog(InitAnimal initAnimal) {
         super(initAnimal);
     }
 }
