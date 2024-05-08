@@ -23,8 +23,8 @@ public class SpringConfig {
     @Bean
     @Scope("prototype")
     @ConditionalOnBean(CreateAnimalService.class)
-    public AnimalRepositoryImpl animalRepositoryImpl(CreateAnimalService service, int quantity) {
-        return new AnimalRepositoryImpl(service, quantity);
+    public AnimalRepositoryImpl animalRepositoryImpl(int quantity) {
+        return new AnimalRepositoryImpl(createAnimalService(), quantity);
     }
 
 }

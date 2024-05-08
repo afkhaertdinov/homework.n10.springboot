@@ -2,6 +2,7 @@ package Service;
 
 import DTO.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -11,10 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Service
 public class CreateAnimalService {
     /**
      * Метод создаёт случайных животных, результат возвращает и сохраняет в файл.

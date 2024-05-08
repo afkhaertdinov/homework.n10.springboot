@@ -6,6 +6,7 @@ import lombok.Getter;
 /**
  * Класс Entry создан, для Сериализации/Десиарилизации Map<Animal,Integer>
  */
+@SuppressWarnings("ClassCanBeRecord")
 @Getter
 public class EntryAnimalInteger {
     private final Animal animal;

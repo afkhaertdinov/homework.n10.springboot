@@ -1,9 +1,9 @@
 package DTO;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
-
-public interface Animal {
+public interface Animal extends Comparator<Animal> {
     @SuppressWarnings("unused")
     String getBreed();
     String getName();
@@ -13,5 +13,9 @@ public interface Animal {
     String getCharacter();
     LocalDate getBirthDate();
     String getSecretInformation();
-    void setSecretInformation(String secretInformation);
-}
+    Animal setSecretInformation(String secretInformation);
+    Animal setName(String name);
+    Animal setCost(Double cost);
+    Animal setCharacter(String character);
+    Animal setBirthDate(LocalDate birthDate);
+    }
